@@ -1,0 +1,44 @@
+{
+  "name": "Hyperaudio Waveform Editor Pro",
+  "short_name": "Hyperaudio Pro",
+  "description": "Professional audio transcription editor with waveform visualization and annotations. Made by Claude AI.",
+  "start_url": "./hyperaudio-waveform-editor-pro.html",
+  "display": "standalone",
+  "background_color": "#191414",
+  "theme_color": "#191414",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-167.png",
+      "sizes": "167x167",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "utilities", "audio"],
+  "screenshots": []
+}

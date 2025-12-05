@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hyperaudio Pro">
+  <meta name="theme-color" content="#191414">
+  <link rel="manifest" href="manifest.json">
+  <title>Hyperaudio Waveform Editor - Pro Edition</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- iOS Icons -->
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
+  <style>
+    /* ========== SPOTIFY THEME VARIABLES ========== */
+    :root {
+      --spotify-black: #191414;
+      --spotify-dark: #121212;
+      --spotify-gray: #282828;
+      --spotify-gray-light: #b3b3b3;
+      --spotify-green: #1db954;
+      --spotify-green-hover: #1ed760;
+      --spotify-white: #ffffff;
+      --bookmark-orange: #ff9800;
+      --bookmark-orange-hover: #f57c00;
+    }
+
+    /* ========== RESET & BASE ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+      background: var(--spotify-black);
+      color: var(--spotify-white);
+      line-height: 1.6;
+    }
+
+    /* ========== CUSTOM SCROLLBAR ========== */
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--spotify-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--spotify-gray);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--spotify-green);
+    }
+
+    /* ========== LAYOUT ========== */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 40px 40px 80px;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      background: var(--spotify-dark);
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--spotify-green) 0%, var(--spotify-green-hover) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: var(--spotify-gray-light);
+      font-size: 14px;
+    }
+
+    .header .version {
+      display: inline-block;
+      background: var(--spotify-green);
+      color: var(--spotify-black);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+
+    /* ========== FILE UPLOAD SECTION ========== */
+    .upload-section {
+      background: var(--spotify-dark);
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .file-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .file-input label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--spotify-white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .file-input input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      background: var(--spotify-gray);
+      border: 2px solid transparent;
+      border-radius: 500px;
+      color: var(--spotify-white);
+      font-size: 14px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .file-input input[type="file"]:hover {
+      border-color: var(--spotify-green);
+      background: #333;
+    }
+
+    .file-input input[type="file"]:focus {
+      outline: none;
+      border-color: var(--spotify-green);
+    }
+
+    .load-btn {
+      width: 100%;
+      padding: 14px 30px;
+      background: var(--spotify-green);
+      color: var(--spotify-white);
+      border: none;
+      border-radius: 500px;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+    }
+
+    .load-btn:hover {
+      background: var(--spotify-green-hover);
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(29, 185, 84, 0.4);
+    }
+
+    .load-btn:active {
+      transform: scale(0.98);
+    }
+
+    .load-btn:disabled {
+      background: var(--spotify-gray);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ========== PROGRESS BAR ========== */
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: var(--spotify-gray);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .progress-container.active {
+      display: block;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--spotify-green) 0%, var(--spotify-green-hover) 100%);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* ========== WAVEFORM SECTION ========== */
+    .waveform-section {
+      background: var(--spotify-dark);
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .play-button {
+      width: 56px;
+      height: 56px;
+      background: var(--spotify-green);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+      flex-shrink: 0;
+    }
+
+    .play-button:hover {
+      background: var(--spotify-green-hover);
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(29, 185, 84, 0.4);
+    }
+
+    .play-button:active {
+      transform: scale(0.95);
+    }
+
+    .play-button svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--spotify-black);
+      margin-left: 2px;
+    }
+
+    .play-button.playing svg {
+      margin-left: 0;
+    }
+
+    .time-display {
+      color: var(--spotify-gray-light);
+      font-size: 12px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      min-width: 100px;
+    }
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .volume-control svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--spotify-gray-light);
+      flex-shrink: 0;
+    }
+
+    .volume-slider {
+      width: 100px;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--spotify-gray);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--spotify-white);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .volume-slider::-webkit-slider-thumb:hover {
+      background: var(--spotify-green);
+      transform: scale(1.2);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      background: var(--spotify-white);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .volume-slider::-moz-range-thumb:hover {
+      background: var(--spotify-green);
+      transform: scale(1.2);
+    }
+
+    .waveform-container {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      background: var(--spotify-black);
+      border-radius: 4px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .waveform-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .playhead {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--spotify-white);
+      pointer-events: none;
+      z-index: 10;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+
+    /* ========== TABS ========== */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--spotify-gray);
+      padding-bottom: 2px;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      color: var(--spotify-gray-light);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 4px 4px 0 0;
+      position: relative;
+    }
+
+    .tab:hover {
+      color: var(--spotify-white);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab.active {
+      color: var(--spotify-green);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--spotify-green);
+    }
+
+    /* ========== TAB CONTENT ========== */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ========== TRANSCRIPT MODE ========== */
+    .transcript-container {
+      background: var(--spotify-dark);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      min-height: 500px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .transcript-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: var(--spotify-gray);
+      color: var(--spotify-white);
+      border: none;
+      border-radius: 500px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--spotify-green);
+      transform: scale(1.05);
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    #transcript {
+      line-height: 2;
+      font-size: 16px;
+    }
+
+    #transcript .speaker {
+      display: block;
+      color: var(--spotify-green);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    #transcript [data-m] {
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline;
+      padding: 2px 4px;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    #transcript [data-m]:hover {
+      background: rgba(29, 185, 84, 0.2);
+    }
+
+    #transcript [data-m].active {
+      background: var(--spotify-green);
+      color: var(--spotify-black);
+      font-weight: 600;
+    }
+
+    #transcript [data-m].read {
+      color: var(--spotify-gray-light);
+    }
+
+    #transcript [data-m].unread {
+      color: var(--spotify-white);
+    }
+
+    #transcript [data-m].edited {
+      border-bottom: 2px dotted var(--bookmark-orange);
+    }
+
+    .bookmark-indicator {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid var(--bookmark-orange);
+      margin: 0 4px;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .bookmark-indicator:hover {
+      filter: brightness(1.2);
+      transform: scale(1.2);
+    }
+
+    /* ========== ANNOTATIONS MODE ========== */
+    .annotations-container {
+      background: var(--spotify-dark);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      min-height: 500px;
+    }
+
+    .annotations-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .annotations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .annotation-item {
+      background: var(--spotify-gray);
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid var(--spotify-green);
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .annotation-item:hover {
+      background: #333;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .annotation-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+
+    .annotation-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      border: 2px solid transparent;
+    }
+
+    .annotation-color:hover {
+      transform: scale(1.15);
+      border-color: var(--spotify-white);
+    }
+
+    .color-picker {
+      position: absolute;
+      display: none;
+      background: var(--spotify-dark);
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 140px;
+    }
+
+    .color-picker.active {
+      display: flex;
+    }
+
+    .color-option {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+      border-color: var(--spotify-white);
+    }
+
+    .annotation-times {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex: 1;
+    }
+
+    .annotation-time-input {
+      background: var(--spotify-black);
+      border: 1px solid var(--spotify-gray);
+      border-radius: 4px;
+      padding: 6px 10px;
+      color: var(--spotify-white);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      width: 70px;
+      transition: all 0.2s;
+    }
+
+    .annotation-time-input:focus {
+      outline: none;
+      border-color: var(--spotify-green);
+    }
+
+    .annotation-time-sep {
+      color: var(--spotify-gray-light);
+      font-size: 12px;
+    }
+
+    .annotation-delete {
+      background: transparent;
+      border: none;
+      color: #ff4444;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+
+    .annotation-delete:hover {
+      background: rgba(255, 68, 68, 0.1);
+      transform: scale(1.1);
+    }
+
+    .annotation-text {
+      width: 100%;
+      min-height: 60px;
+      background: var(--spotify-black);
+      border: 1px solid var(--spotify-gray);
+      border-radius: 4px;
+      padding: 10px;
+      color: var(--spotify-white);
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      transition: all 0.2s;
+    }
+
+    .annotation-text:focus {
+      outline: none;
+      border-color: var(--spotify-green);
+    }
+
+    .annotation-empty {
+      text-align: center;
+      color: var(--spotify-gray-light);
+      padding: 60px 20px;
+      font-size: 14px;
+    }
+
+    /* ========== BOOKMARK BUTTON ========== */
+    .bookmark-btn {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bookmark-orange);
+      color: var(--spotify-white);
+      border: none;
+      padding: 16px;
+      border-radius: 50%;
+      font-size: 32px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+      transition: all 0.2s;
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bookmark-btn:hover {
+      background: var(--bookmark-orange-hover);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 16px rgba(255, 152, 0, 0.5);
+    }
+
+    .bookmark-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .bookmark-btn:disabled {
+      background: var(--spotify-gray);
+      cursor: not-allowed;
+      transform: translateY(-50%);
+      box-shadow: none;
+      opacity: 0.5;
+    }
+
+    /* ========== STATUS MESSAGES ========== */
+    .status {
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.active {
+      display: block;
+    }
+
+    .status.success {
+      background: rgba(29, 185, 84, 0.2);
+      border-left: 4px solid var(--spotify-green);
+      color: var(--spotify-green);
+    }
+
+    .status.error {
+      background: rgba(255, 68, 68, 0.2);
+      border-left: 4px solid #ff4444;
+      color: #ff6666;
+    }
+
+    .status.info {
+      background: rgba(29, 185, 84, 0.1);
+      border-left: 4px solid var(--spotify-green);
+      color: var(--spotify-gray-light);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px 20px 30px 60px;
+      }
+
+      .file-inputs {
+        grid-template-columns: 1fr;
+      }
+
+      .player-controls {
+        flex-wrap: wrap;
+      }
+
+      .volume-control {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .volume-slider {
+        flex: 1;
+      }
+    }
+
+    /* ========== HIDDEN AUDIO ELEMENT ========== */
+    #audioPlayer {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🎵 Waveform Hyperaudio Editor</h1>
+      <p>Made by Claude AI</p>
+      <span class="version">Pro</span>
+    </div>
+
+    <!-- Status Messages -->
+    <div id="statusMessage" class="status"></div>
+
+    <!-- File Upload Section -->
+    <div class="upload-section">
+      <div class="file-inputs">
+        <div class="file-input">
+          <label>Audio File</label>
+          <input type="file" id="audioFile" accept="audio/*">
+        </div>
+        <div class="file-input">
+          <label>Transcript JSON (WhisperX)</label>
+          <input type="file" id="transcriptFile" accept=".json">
+        </div>
+      </div>
+      <button class="load-btn" id="loadBtn">Load Files</button>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- Waveform Player -->
+    <div class="waveform-section">
+      <div class="player-controls">
+        <button class="play-button" id="playBtn" disabled>
+          <svg id="playIcon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+          </svg>
+        </button>
+        <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+        <div class="volume-control">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          </svg>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+        </div>
+      </div>
+      <div class="waveform-container" id="waveformContainer">
+        <canvas class="waveform-canvas" id="waveformCanvas"></canvas>
+        <div class="playhead" id="playhead" style="left: 0;"></div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="transcript">📝 Transcript</button>
+      <button class="tab" data-tab="annotations">💬 Annotations</button>
+    </div>
+
+    <!-- Transcript Tab -->
+    <div class="tab-content active" id="transcriptTab">
+      <div class="transcript-container">
+        <div class="transcript-controls">
+          <button class="btn" id="exportJsonBtn">Export JSON</button>
+          <button class="btn" id="exportSrtBtn">Export SRT</button>
+          <button class="btn" id="exportTxtBtn">Export TXT</button>
+        </div>
+        <div id="transcript"></div>
+      </div>
+    </div>
+
+    <!-- Annotations Tab -->
+    <div class="tab-content" id="annotationsTab">
+      <div class="annotations-container">
+        <div class="annotations-controls">
+          <button class="btn" id="addAnnotationBtn">+ Add Annotation</button>
+          <button class="btn" id="exportAnnotationsBtn">Export Annotations</button>
+        </div>
+        <div class="annotations-list" id="annotationsList">
+          <div class="annotation-empty">No annotations yet. Click "+ Add Annotation" to create one.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bookmark Button -->
+    <button class="bookmark-btn" id="bookmarkBtn" disabled>📌</button>
+
+    <!-- Hidden Audio Element -->
+    <audio id="audioPlayer"></audio>
+  </div>
+
+  <!-- Hyperaudio Lite Library -->
+  <script>
+/*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
+/*! Version 2.3.2 */
+
+'use strict';
+
+// Base player class to handle common player functionality
+class BasePlayer {
+  constructor(instance) {
+    this.player = this.initPlayer(instance);
+    this.paused = true;
+    if (this.player) {
+      this.attachEventListeners(instance);
+    }
+  }
+
+  initPlayer(instance) {
+    throw new Error('initPlayer method should be implemented by subclasses');
+  }
+
+  attachEventListeners(instance) {
+    this.player.addEventListener('pause', instance.pausePlayHead.bind(instance), false);
+    this.player.addEventListener('play', instance.preparePlayHead.bind(instance), false);
+  }
+
+  getTime() {
+    return Promise.resolve(this.player.currentTime);
+  }
+
+  setTime(seconds) {
+    this.player.currentTime = seconds;
+  }
+
+  play() {
+    this.player.play();
+    this.paused = false;
+  }
+
+  pause() {
+    this.player.pause();
+    this.paused = true;
+  }
+}
+
+class NativePlayer extends BasePlayer {
+  initPlayer(instance) {
+    return instance.player;
+  }
+}
+
+const hyperaudioPlayerOptions = {
+  "native": NativePlayer
+};
+
+function hyperaudioPlayer(playerType, instance) {
+  if (playerType) {
+    return new hyperaudioPlayerOptions[playerType](instance);
+  }
+}
+
+class HyperaudioLite {
+  constructor(transcriptId, mediaElementId, minimizedMode, autoscroll, doubleClick, webMonetization, playOnClick) {
+    this.transcript = document.getElementById(transcriptId);
+    this.init(mediaElementId, minimizedMode, autoscroll, doubleClick, webMonetization, playOnClick);
+
+    this.preparePlayHead = this.preparePlayHead.bind(this);
+    this.pausePlayHead = this.pausePlayHead.bind(this);
+    this.setPlayHead = this.setPlayHead.bind(this);
+    this.checkPlayHead = this.checkPlayHead.bind(this);
+    this.clearTimer = this.clearTimer.bind(this);
+  }
+
+  init(mediaElementId, minimizedMode, autoscroll, doubleClick, webMonetization, playOnClick) {
+    this.setupPlayer(mediaElementId);
+    this.setupTranscriptWords();
+    this.setupEventListeners(doubleClick, playOnClick);
+    this.minimizedMode = minimizedMode;
+    this.autoscroll = autoscroll;
+    this.webMonetization = webMonetization;
+  }
+
+  setupPlayer(mediaElementId) {
+    this.player = document.getElementById(mediaElementId);
+    this.playerType = 'native';
+    this.myPlayer = hyperaudioPlayer(this.playerType, this);
+  }
+
+  setupTranscriptWords() {
+    const words = this.transcript.querySelectorAll('[data-m]');
+    this.wordArr = this.createWordArray(words);
+  }
+
+  setupEventListeners(doubleClick, playOnClick) {
+    this.minimizedMode = false;
+    this.autoscroll = false;
+    this.doubleClick = doubleClick;
+    this.webMonetization = false;
+    this.playOnClick = playOnClick;
+    this.highlightedText = false;
+
+    const playHeadEvent = doubleClick ? 'dblclick' : 'click';
+    this.transcript.addEventListener(playHeadEvent, this.setPlayHead.bind(this), false);
+    this.transcript.addEventListener(playHeadEvent, this.checkPlayHead.bind(this), false);
+  }
+
+  createWordArray(words) {
+    return Array.from(words).map(word => {
+      const m = parseInt(word.getAttribute('data-m'));
+      word.classList.add('unread');
+      return { n: word, m };
+    });
+  }
+
+  setPlayHead(e) {
+    const target = e.target.closest('[data-m]');
+    if (!target) return;
+
+    this.highlightedText = false;
+    this.clearActiveClasses();
+
+    if (this.myPlayer.paused && target.dataset.m) {
+      target.classList.add('active');
+    }
+
+    const timeSecs = parseInt(target.dataset.m) / 1000;
+    this.updateTranscriptVisualState(timeSecs);
+
+    if (!isNaN(timeSecs)) {
+      this.myPlayer.setTime(timeSecs);
+      if (this.playOnClick) {
+        this.myPlayer.play();
+      }
+    }
+  }
+
+  clearActiveClasses() {
+    const activeElements = Array.from(this.transcript.getElementsByClassName('active'));
+    activeElements.forEach(e => e.classList.remove('active'));
+  }
+
+  preparePlayHead() {
+    this.myPlayer.paused = false;
+    this.checkPlayHead();
+  }
+
+  pausePlayHead() {
+    this.clearTimer();
+    this.myPlayer.paused = true;
+  }
+
+  checkPlayHead() {
+    this.clearTimer();
+
+    (async () => {
+      this.currentTime = await this.myPlayer.getTime();
+      this.checkStatus();
+    })();
+  }
+
+  clearTimer() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
+
+  checkStatus() {
+    if (!this.myPlayer.paused) {
+      const indices = this.updateTranscriptVisualState(this.currentTime);
+      const index = indices.currentWordIndex;
+
+      let interval = 0;
+      if (this.wordArr[index]) {
+        interval = this.wordArr[index].n.getAttribute('data-m') - this.currentTime * 1000;
+      }
+
+      this.timer = setTimeout(() => this.checkPlayHead(), interval + 1);
+    } else {
+      this.clearTimer();
+    }
+  }
+
+  updateTranscriptVisualState(currentTime) {
+    let index = 0;
+    let words = this.wordArr.length - 1;
+
+    // Binary search
+    while (index <= words) {
+      const guessIndex = index + ((words - index) >> 1);
+      const difference = this.wordArr[guessIndex].m / 1000 - currentTime;
+
+      if (difference < 0) {
+        index = guessIndex + 1;
+      } else if (difference > 0) {
+        words = guessIndex - 1;
+      } else {
+        index = guessIndex;
+        break;
+      }
+    }
+
+    this.wordArr.forEach((word, i) => {
+      const classList = word.n.classList;
+
+      if (i < index) {
+        classList.add('read');
+        classList.remove('unread', 'active');
+      } else {
+        classList.add('unread');
+        classList.remove('read');
+      }
+    });
+
+    if (index > 0) {
+      if (!this.myPlayer.paused) {
+        this.wordArr[index - 1].n.classList.add('active');
+      }
+    }
+
+    return {
+      currentWordIndex: index,
+      currentParentElementIndex: 0
+    };
+  }
+}
+  </script>
+
+  <!-- Web Worker for Audio Processing (Inline) -->
+  <script id="waveform-worker" type="javascript/worker">
+    self.addEventListener('message', function(e) {
+      const { audioData, sampleRate, samples } = e.data;
+      
+      try {
+        // Process audio data to generate waveform
+        const blockSize = Math.floor(audioData.length / samples);
+        const filteredData = [];
+
+        for (let i = 0; i < samples; i++) {
+          let blockStart = blockSize * i;
+          let sum = 0;
+          for (let j = 0; j < blockSize; j++) {
+            sum += Math.abs(audioData[blockStart + j]);
+          }
+          filteredData.push(sum / blockSize);
+          
+          // Report progress every 50 samples
+          if (i % 50 === 0) {
+            self.postMessage({ 
+              type: 'progress', 
+              progress: Math.floor((i / samples) * 100) 
+            });
+          }
+        }
+
+        // Normalize
+        const max = Math.max(...filteredData);
+        const normalizedData = filteredData.map(v => v / max);
+
+        self.postMessage({ 
+          type: 'complete', 
+          waveformData: normalizedData 
+        });
+      } catch (error) {
+        self.postMessage({ 
+          type: 'error', 
+          error: error.message 
+        });
+      }
+    });
+  </script>
+
+  <!-- Main Application Script -->
+  <script>
+    // ========== STATE MANAGEMENT ==========
+    const state = {
+      audioElement: null,
+      transcriptData: null,
+      audioBuffer: null,
+      audioContext: null,
+      hyperaudioInstance: null,
+      isPlaying: false,
+      currentTime: 0,
+      duration: 0,
+      annotations: [],
+      currentColor: '#1db954',
+      waveformData: null,
+      bookmarkPosition: null,
+      currentActiveWord: null,
+      waveformWorker: null
+    };
+
+    const ANNOTATION_COLORS = [
+      '#1db954', // Spotify green - default
+      '#ff6b6b', // red
+      '#4ecdc4', // teal
+      '#ffe66d', // yellow
+      '#a8dadc', // blue
+      '#ff9ff3', // pink
+      '#ffa07a', // orange
+      '#98d8c8'  // mint
+    ];
+
+    // ========== DOM ELEMENTS ==========
+    const elements = {
+      audioFile: document.getElementById('audioFile'),
+      transcriptFile: document.getElementById('transcriptFile'),
+      loadBtn: document.getElementById('loadBtn'),
+      audioPlayer: document.getElementById('audioPlayer'),
+      playBtn: document.getElementById('playBtn'),
+      playIcon: document.getElementById('playIcon'),
+      pauseIcon: document.getElementById('pauseIcon'),
+      timeDisplay: document.getElementById('timeDisplay'),
+      volumeSlider: document.getElementById('volumeSlider'),
+      waveformContainer: document.getElementById('waveformContainer'),
+      waveformCanvas: document.getElementById('waveformCanvas'),
+      playhead: document.getElementById('playhead'),
+      transcript: document.getElementById('transcript'),
+      bookmarkBtn: document.getElementById('bookmarkBtn'),
+      statusMessage: document.getElementById('statusMessage'),
+      annotationsList: document.getElementById('annotationsList'),
+      addAnnotationBtn: document.getElementById('addAnnotationBtn'),
+      exportJsonBtn: document.getElementById('exportJsonBtn'),
+      exportSrtBtn: document.getElementById('exportSrtBtn'),
+      exportTxtBtn: document.getElementById('exportTxtBtn'),
+      exportAnnotationsBtn: document.getElementById('exportAnnotationsBtn'),
+      progressContainer: document.getElementById('progressContainer'),
+      progressBar: document.getElementById('progressBar')
+    };
+
+    // ========== UTILITY FUNCTIONS ==========
+    function showStatus(message, type = 'info') {
+      elements.statusMessage.textContent = message;
+      elements.statusMessage.className = `status ${type} active`;
+      setTimeout(() => {
+        elements.statusMessage.classList.remove('active');
+      }, 5000);
+    }
+
+    function updateProgress(percent) {
+      elements.progressContainer.classList.add('active');
+      elements.progressBar.style.width = percent + '%';
+      
+      if (percent >= 100) {
+        setTimeout(() => {
+          elements.progressContainer.classList.remove('active');
+        }, 500);
+      }
+    }
+
+    function formatTime(seconds) {
+      if (!isFinite(seconds) || seconds < 0) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function parseTimeInput(timeStr) {
+      const parts = timeStr.split(':');
+      if (parts.length === 2) {
+        const mins = parseInt(parts[0]) || 0;
+        const secs = parseInt(parts[1]) || 0;
+        return mins * 60 + secs;
+      }
+      return 0;
+    }
+
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // ========== WEB WORKER SETUP ==========
+    function createWaveformWorker() {
+      const workerScript = document.getElementById('waveform-worker').textContent;
+      const blob = new Blob([workerScript], { type: 'application/javascript' });
+      const workerUrl = URL.createObjectURL(blob);
+      return new Worker(workerUrl);
+    }
+
+    // ========== FILE LOADING ==========
+    elements.loadBtn.addEventListener('click', async () => {
+      const audioFile = elements.audioFile.files[0];
+      const transcriptFile = elements.transcriptFile.files[0];
+
+      if (!audioFile || !transcriptFile) {
+        showStatus('Please select both audio and transcript files', 'error');
+        return;
+      }
+
+      try {
+        showStatus('Loading files...', 'info');
+        elements.loadBtn.disabled = true;
+        updateProgress(10);
+
+        // Load audio
+        const audioUrl = URL.createObjectURL(audioFile);
+        elements.audioPlayer.src = audioUrl;
+        state.audioElement = elements.audioPlayer;
+
+        await new Promise((resolve, reject) => {
+          elements.audioPlayer.onloadedmetadata = resolve;
+          elements.audioPlayer.onerror = reject;
+        });
+
+        state.duration = elements.audioPlayer.duration;
+        updateProgress(20);
+
+        // Load and process waveform with Web Worker
+        showStatus('Processing audio waveform (this may take up to a minute for long files)...', 'info');
+        await processAudioForWaveform(audioFile);
+        updateProgress(70);
+
+        // Load transcript
+        showStatus('Loading transcript...', 'info');
+        const transcriptText = await transcriptFile.text();
+        state.transcriptData = JSON.parse(transcriptText);
+        updateProgress(80);
+
+        // Build transcript HTML
+        showStatus('Building transcript interface...', 'info');
+        buildTranscript(state.transcriptData);
+        updateProgress(90);
+
+        // Initialize Hyperaudio Lite
+        state.hyperaudioInstance = new HyperaudioLite('transcript', 'audioPlayer', false, false, false, false, true);
+
+        // Enable controls
+        elements.playBtn.disabled = false;
+        elements.bookmarkBtn.disabled = false;
+
+        updateProgress(100);
+        showStatus('Files loaded successfully! Ready to edit.', 'success');
+        drawWaveform();
+      } catch (error) {
+        console.error('Error loading files:', error);
+        showStatus(`Error loading files: ${error.message}`, 'error');
+        updateProgress(0);
+      } finally {
+        elements.loadBtn.disabled = false;
+      }
+    });
+
+    // ========== WAVEFORM PROCESSING WITH WEB WORKER ==========
+    async function processAudioForWaveform(audioFile) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        
+        fileReader.onload = async (e) => {
+          try {
+            state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Decode audio data
+            state.audioBuffer = await state.audioContext.decodeAudioData(e.target.result);
+            
+            // Create Web Worker
+            state.waveformWorker = createWaveformWorker();
+            
+            // Listen for worker messages
+            state.waveformWorker.onmessage = function(event) {
+              const { type, progress, waveformData, error } = event.data;
+              
+              if (type === 'progress') {
+                // Update progress bar: 20% base + 50% for waveform processing
+                updateProgress(20 + Math.floor(progress * 0.5));
+              } else if (type === 'complete') {
+                state.waveformData = waveformData;
+                state.waveformWorker.terminate();
+                state.waveformWorker = null;
+                resolve();
+              } else if (type === 'error') {
+                state.waveformWorker.terminate();
+                state.waveformWorker = null;
+                reject(new Error(error));
+              }
+            };
+            
+            state.waveformWorker.onerror = function(error) {
+              state.waveformWorker.terminate();
+              state.waveformWorker = null;
+              reject(error);
+            };
+            
+            // Send audio data to worker
+            const audioData = state.audioBuffer.getChannelData(0);
+            state.waveformWorker.postMessage({
+              audioData: audioData,
+              sampleRate: state.audioBuffer.sampleRate,
+              samples: 1000
+            });
+            
+          } catch (error) {
+            reject(error);
+          }
+        };
+        
+        fileReader.onerror = reject;
+        fileReader.readAsArrayBuffer(audioFile);
+      });
+    }
+
+    function drawWaveform() {
+      if (!state.waveformData) return;
+
+      const canvas = elements.waveformCanvas;
+      const container = elements.waveformContainer;
+      const dpr = window.devicePixelRatio || 1;
+
+      canvas.width = container.clientWidth * dpr;
+      canvas.height = container.clientHeight * dpr;
+      canvas.style.width = container.clientWidth + 'px';
+      canvas.style.height = container.clientHeight + 'px';
+
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      const barWidth = width / state.waveformData.length;
+      const barGap = barWidth * 0.2;
+      const actualBarWidth = barWidth - barGap;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw annotation regions first (behind bars)
+      state.annotations.forEach(annotation => {
+        if (annotation.end && annotation.end > annotation.start) {
+          const startX = (annotation.start / state.duration) * width;
+          const endX = (annotation.end / state.duration) * width;
+          ctx.fillStyle = annotation.color + '40'; // 25% opacity
+          ctx.fillRect(startX, 0, endX - startX, height);
+        }
+      });
+
+      // Draw waveform bars
+      state.waveformData.forEach((value, i) => {
+        const x = i * barWidth;
+        const barHeight = value * height * 0.9;
+        const y = (height - barHeight) / 2;
+
+        ctx.fillStyle = '#1db954';
+        ctx.fillRect(x, y, actualBarWidth, barHeight);
+      });
+    }
+
+    // ========== TRANSCRIPT BUILDING ==========
+    function buildTranscript(data) {
+      const transcriptEl = elements.transcript;
+      transcriptEl.innerHTML = '';
+
+      if (!data.segments || data.segments.length === 0) {
+        transcriptEl.innerHTML = '<p style="color: var(--spotify-gray-light);">No transcript data available.</p>';
+        return;
+      }
+
+      data.segments.forEach((segment, segIdx) => {
+        // Add speaker label
+        if (segment.speaker) {
+          const speakerSpan = document.createElement('span');
+          speakerSpan.className = 'speaker';
+          speakerSpan.textContent = segment.speaker;
+          transcriptEl.appendChild(speakerSpan);
+        }
+
+        // Add paragraph
+        const p = document.createElement('p');
+        
+        if (segment.words && segment.words.length > 0) {
+          segment.words.forEach((wordData, wordIdx) => {
+            const wordSpan = document.createElement('span');
+            wordSpan.textContent = wordData.word + ' ';
+            
+            if (wordData.start !== undefined && wordData.start !== null) {
+              const startMs = Math.round(wordData.start * 1000);
+              wordSpan.setAttribute('data-m', startMs);
+              
+              if (wordData.end !== undefined) {
+                const durationMs = Math.round((wordData.end - wordData.start) * 1000);
+                wordSpan.setAttribute('data-d', durationMs);
+              }
+
+              // Make word editable
+              wordSpan.contentEditable = true;
+              wordSpan.addEventListener('input', debounce((e) => {
+                e.target.classList.add('edited');
+              }, 300));
+            }
+            
+            p.appendChild(wordSpan);
+          });
+        } else {
+          // Fallback: use segment text
+          p.textContent = segment.text || '';
+        }
+
+        transcriptEl.appendChild(p);
+      });
+    }
+
+    // ========== PLAYER CONTROLS ==========
+    elements.playBtn.addEventListener('click', () => {
+      if (state.isPlaying) {
+        elements.audioPlayer.pause();
+      } else {
+        elements.audioPlayer.play();
+      }
+    });
+
+    elements.audioPlayer.addEventListener('play', () => {
+      state.isPlaying = true;
+      elements.playIcon.style.display = 'none';
+      elements.pauseIcon.style.display = 'block';
+      elements.playBtn.classList.add('playing');
+    });
+
+    elements.audioPlayer.addEventListener('pause', () => {
+      state.isPlaying = false;
+      elements.playIcon.style.display = 'block';
+      elements.pauseIcon.style.display = 'none';
+      elements.playBtn.classList.remove('playing');
+    });
+
+    elements.audioPlayer.addEventListener('timeupdate', () => {
+      state.currentTime = elements.audioPlayer.currentTime;
+      updateTimeDisplay();
+      updatePlayhead();
+    });
+
+    function updateTimeDisplay() {
+      elements.timeDisplay.textContent = `${formatTime(state.currentTime)} / ${formatTime(state.duration)}`;
+    }
+
+    function updatePlayhead() {
+      const progress = (state.currentTime / state.duration) * 100;
+      elements.playhead.style.left = progress + '%';
+    }
+
+    elements.volumeSlider.addEventListener('input', (e) => {
+      elements.audioPlayer.volume = e.target.value / 100;
+    });
+
+    // ========== WAVEFORM SEEKING ==========
+    elements.waveformContainer.addEventListener('click', (e) => {
+      if (!state.duration) return;
+      
+      const rect = elements.waveformContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percent = x / rect.width;
+      const time = percent * state.duration;
+      
+      elements.audioPlayer.currentTime = time;
+      
+      if (state.hyperaudioInstance) {
+        state.hyperaudioInstance.updateTranscriptVisualState(time);
+      }
+    });
+
+    // Redraw waveform on window resize
+    window.addEventListener('resize', debounce(() => {
+      if (state.waveformData) {
+        drawWaveform();
+      }
+    }, 250));
+
+    // ========== TAB SWITCHING ==========
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetTab = tab.dataset.tab;
+        
+        // Update tab buttons
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Update tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        if (targetTab === 'transcript') {
+          document.getElementById('transcriptTab').classList.add('active');
+        } else if (targetTab === 'annotations') {
+          document.getElementById('annotationsTab').classList.add('active');
+        }
+      });
+    });
+
+    // ========== BOOKMARK FUNCTIONALITY ==========
+    elements.bookmarkBtn.addEventListener('click', () => {
+      const currentTime = state.currentTime;
+      
+      // Find closest word to current time
+      const words = elements.transcript.querySelectorAll('[data-m]');
+      let closestWord = null;
+      let minDiff = Infinity;
+      
+      words.forEach(word => {
+        const wordTime = parseInt(word.getAttribute('data-m')) / 1000;
+        const diff = Math.abs(wordTime - currentTime);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestWord = word;
+        }
+      });
+      
+      if (closestWord) {
+        // Remove existing bookmark
+        const existingBookmark = elements.transcript.querySelector('.bookmark-indicator');
+        if (existingBookmark) {
+          existingBookmark.remove();
+        }
+        
+        // Add new bookmark
+        const bookmark = document.createElement('span');
+        bookmark.className = 'bookmark-indicator';
+        bookmark.title = 'Click to jump to bookmark';
+        bookmark.addEventListener('click', () => {
+          const wordTime = parseInt(closestWord.getAttribute('data-m')) / 1000;
+          elements.audioPlayer.currentTime = wordTime;
+          if (state.hyperaudioInstance) {
+            state.hyperaudioInstance.updateTranscriptVisualState(wordTime);
+          }
+        });
+        
+        closestWord.parentNode.insertBefore(bookmark, closestWord);
+        state.bookmarkPosition = currentTime;
+        
+        showStatus(`Bookmark set at ${formatTime(currentTime)}`, 'success');
+      }
+    });
+
+    // ========== ANNOTATIONS ==========
+    elements.addAnnotationBtn.addEventListener('click', () => {
+      const annotation = {
+        id: Date.now(),
+        start: state.currentTime,
+        end: null,
+        text: '',
+        color: state.currentColor
+      };
+      
+      state.annotations.push(annotation);
+      renderAnnotations();
+      drawWaveform();
+      showStatus('Annotation added', 'success');
+    });
+
+    function renderAnnotations() {
+      const container = elements.annotationsList;
+      
+      if (state.annotations.length === 0) {
+        container.innerHTML = '<div class="annotation-empty">No annotations yet. Click "+ Add Annotation" to create one.</div>';
+        return;
+      }
+      
+      container.innerHTML = '';
+      
+      state.annotations.forEach((annotation, index) => {
+        const item = document.createElement('div');
+        item.className = 'annotation-item';
+        item.style.borderLeftColor = annotation.color;
+        
+        // Click to seek
+        item.addEventListener('click', (e) => {
+          if (e.target.closest('.annotation-delete') || 
+              e.target.closest('.annotation-color') ||
+              e.target.closest('.annotation-time-input') ||
+              e.target.closest('.annotation-text')) {
+            return;
+          }
+          elements.audioPlayer.currentTime = annotation.start;
+          if (state.hyperaudioInstance) {
+            state.hyperaudioInstance.updateTranscriptVisualState(annotation.start);
+          }
+        });
+        
+        const header = document.createElement('div');
+        header.className = 'annotation-header';
+        
+        // Color picker
+        const colorCircle = document.createElement('div');
+        colorCircle.className = 'annotation-color';
+        colorCircle.style.backgroundColor = annotation.color;
+        
+        const colorPicker = document.createElement('div');
+        colorPicker.className = 'color-picker';
+        
+        ANNOTATION_COLORS.forEach(color => {
+          const colorOption = document.createElement('div');
+          colorOption.className = 'color-option';
+          colorOption.style.backgroundColor = color;
+          colorOption.addEventListener('click', () => {
+            annotation.color = color;
+            colorCircle.style.backgroundColor = color;
+            item.style.borderLeftColor = color;
+            colorPicker.classList.remove('active');
+            drawWaveform();
+          });
+          colorPicker.appendChild(colorOption);
+        });
+        
+        colorCircle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          document.querySelectorAll('.color-picker').forEach(p => {
+            if (p !== colorPicker) p.classList.remove('active');
+          });
+          colorPicker.classList.toggle('active');
+        });
+        
+        colorCircle.appendChild(colorPicker);
+        header.appendChild(colorCircle);
+        
+        // Time inputs
+        const timesDiv = document.createElement('div');
+        timesDiv.className = 'annotation-times';
+        
+        const startInput = document.createElement('input');
+        startInput.type = 'text';
+        startInput.className = 'annotation-time-input';
+        startInput.value = formatTime(annotation.start);
+        startInput.placeholder = 'Start';
+        startInput.addEventListener('input', debounce((e) => {
+          const newTime = parseTimeInput(e.target.value);
+          if (newTime >= 0 && newTime <= state.duration) {
+            annotation.start = newTime;
+            drawWaveform();
+          }
+        }, 300));
+        
+        const separator = document.createElement('span');
+        separator.className = 'annotation-time-sep';
+        separator.textContent = '→';
+        
+        const endInput = document.createElement('input');
+        endInput.type = 'text';
+        endInput.className = 'annotation-time-input';
+        endInput.value = annotation.end ? formatTime(annotation.end) : '';
+        endInput.placeholder = 'End (opt)';
+        endInput.addEventListener('input', debounce((e) => {
+          if (e.target.value) {
+            const newTime = parseTimeInput(e.target.value);
+            if (newTime >= annotation.start && newTime <= state.duration) {
+              annotation.end = newTime;
+              drawWaveform();
+            }
+          } else {
+            annotation.end = null;
+            drawWaveform();
+          }
+        }, 300));
+        
+        timesDiv.appendChild(startInput);
+        timesDiv.appendChild(separator);
+        timesDiv.appendChild(endInput);
+        header.appendChild(timesDiv);
+        
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'annotation-delete';
+        deleteBtn.innerHTML = '🗑';
+        deleteBtn.title = 'Delete annotation';
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (confirm('Delete this annotation?')) {
+            state.annotations.splice(index, 1);
+            renderAnnotations();
+            drawWaveform();
+            showStatus('Annotation deleted', 'info');
+          }
+        });
+        header.appendChild(deleteBtn);
+        
+        item.appendChild(header);
+        
+        // Text area
+        const textarea = document.createElement('textarea');
+        textarea.className = 'annotation-text';
+        textarea.placeholder = 'Enter annotation text...';
+        textarea.value = annotation.text;
+        textarea.addEventListener('input', debounce((e) => {
+          annotation.text = e.target.value;
+        }, 300));
+        
+        item.appendChild(textarea);
+        container.appendChild(item);
+      });
+    }
+
+    // Close color pickers when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.annotation-color')) {
+        document.querySelectorAll('.color-picker').forEach(p => {
+          p.classList.remove('active');
+        });
+      }
+    });
+
+    // ========== BULLETPROOF EXPORT FUNCTIONS ==========
+    
+    // Export JSON with edited text
+    elements.exportJsonBtn.addEventListener('click', () => {
+      if (!state.transcriptData) {
+        showStatus('No transcript loaded', 'error');
+        return;
+      }
+      
+      try {
+        // Get all word elements from DOM
+        const words = elements.transcript.querySelectorAll('[data-m]');
+        
+        // Deep clone original data to avoid mutations
+        const editedData = JSON.parse(JSON.stringify(state.transcriptData));
+        
+        let wordIndex = 0;
+        editedData.segments.forEach(segment => {
+          if (segment.words) {
+            segment.words.forEach(word => {
+              if (wordIndex < words.length) {
+                const wordEl = words[wordIndex];
+                
+                // SAFE: Get text even if contentEditable added nested nodes
+                let text = wordEl.textContent || wordEl.innerText || '';
+                
+                // Clean up: remove extra whitespace, line breaks, etc.
+                text = text.replace(/\s+/g, ' ').trim();
+                
+                // Update word or mark as deleted
+                if (text.length > 0) {
+                  word.word = text;
+                } else {
+                  word.word = '[deleted]';
+                }
+                
+                // Add edited flag for reference
+                if (wordEl.classList.contains('edited')) {
+                  word.edited = true;
+                }
+                
+                wordIndex++;
+              }
+            });
+          }
+        });
+        
+        // Verify JSON is valid before downloading
+        const jsonString = JSON.stringify(editedData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        downloadFile(blob, 'transcript-edited.json');
+        showStatus('✓ JSON exported successfully with all edits', 'success');
+        
+      } catch (error) {
+        console.error('Export error:', error);
+        showStatus(`Export failed: ${error.message}`, 'error');
+      }
+    });
+
+    // Export SRT with edited text
+    elements.exportSrtBtn.addEventListener('click', () => {
+      if (!state.transcriptData) {
+        showStatus('No transcript loaded', 'error');
+        return;
+      }
+      
+      try {
+        const words = elements.transcript.querySelectorAll('[data-m]');
+        let srt = '';
+        let counter = 1;
+        
+        state.transcriptData.segments.forEach((segment) => {
+          if (segment.words && segment.words.length > 0) {
+            // Build array of edited words for this segment
+            let editedWords = [];
+            
+            segment.words.forEach((wordData) => {
+              // Find corresponding DOM element by timestamp
+              const wordEl = Array.from(words).find(el => 
+                parseInt(el.getAttribute('data-m')) === Math.round(wordData.start * 1000)
+              );
+              
+              if (wordEl) {
+                let text = wordEl.textContent || wordEl.innerText || '';
+                text = text.replace(/\s+/g, ' ').trim();
+                if (text.length > 0) {
+                  editedWords.push(text);
+                }
+              } else {
+                // Fallback to original
+                editedWords.push(wordData.word);
+              }
+            });
+            
+            // Only create SRT entry if there are words
+            if (editedWords.length > 0) {
+              let text = editedWords.join(' ');
+              let start = segment.start;
+              let end = segment.end;
+              
+              srt += `${counter}\n`;
+              srt += `${formatSrtTime(start)} --> ${formatSrtTime(end)}\n`;
+              srt += `${text}\n\n`;
+              counter++;
+            }
+          }
+        });
+        
+        const blob = new Blob([srt], { type: 'text/plain' });
+        downloadFile(blob, 'transcript-edited.srt');
+        showStatus('✓ SRT exported with edited text', 'success');
+        
+      } catch (error) {
+        console.error('SRT export error:', error);
+        showStatus(`SRT export failed: ${error.message}`, 'error');
+      }
+    });
+
+    // Export TXT with edited text
+    elements.exportTxtBtn.addEventListener('click', () => {
+      if (!state.transcriptData) {
+        showStatus('No transcript loaded', 'error');
+        return;
+      }
+      
+      try {
+        const words = elements.transcript.querySelectorAll('[data-m]');
+        let text = '';
+        
+        state.transcriptData.segments.forEach((segment) => {
+          if (segment.speaker) {
+            text += `\n${segment.speaker}\n`;
+          }
+          
+          if (segment.words && segment.words.length > 0) {
+            let editedWords = [];
+            
+            segment.words.forEach((wordData) => {
+              const wordEl = Array.from(words).find(el => 
+                parseInt(el.getAttribute('data-m')) === Math.round(wordData.start * 1000)
+              );
+              
+              if (wordEl) {
+                let wordText = wordEl.textContent || wordEl.innerText || '';
+                wordText = wordText.replace(/\s+/g, ' ').trim();
+                if (wordText.length > 0) {
+                  editedWords.push(wordText);
+                }
+              } else {
+                editedWords.push(wordData.word);
+              }
+            });
+            
+            text += editedWords.join(' ') + '\n';
+          } else if (segment.text) {
+            text += segment.text + '\n';
+          }
+        });
+        
+        const blob = new Blob([text], { type: 'text/plain' });
+        downloadFile(blob, 'transcript-edited.txt');
+        showStatus('✓ TXT exported with edited text', 'success');
+        
+      } catch (error) {
+        console.error('TXT export error:', error);
+        showStatus(`TXT export failed: ${error.message}`, 'error');
+      }
+    });
+
+    // Export annotations
+    elements.exportAnnotationsBtn.addEventListener('click', () => {
+      if (state.annotations.length === 0) {
+        showStatus('No annotations to export', 'error');
+        return;
+      }
+      
+      try {
+        const exportData = {
+          annotations: state.annotations,
+          exported_at: new Date().toISOString(),
+          audio_duration: state.duration,
+          total_annotations: state.annotations.length
+        };
+        
+        const jsonString = JSON.stringify(exportData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        downloadFile(blob, 'annotations.json');
+        showStatus('✓ Annotations exported successfully', 'success');
+        
+      } catch (error) {
+        console.error('Annotation export error:', error);
+        showStatus(`Annotation export failed: ${error.message}`, 'error');
+      }
+    });
+
+    function formatSrtTime(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = Math.floor(seconds % 60);
+      const ms = Math.floor((seconds % 1) * 1000);
+      
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')},${ms.toString().padStart(3, '0')}`;
+    }
+
+    function downloadFile(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ========== PWA SERVICE WORKER REGISTRATION ==========
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registered:', registration.scope);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
